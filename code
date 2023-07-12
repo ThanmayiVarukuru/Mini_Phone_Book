@@ -1,0 +1,126 @@
+ Source code
+ Main Module: Mini book
+import menu
+import db_connection
+while True:
+ print("\t\t\t MINI PHONE CONTACT BOOK\n")
+ print("1.you want to ment anything in phone book???")
+ print("2.Exit")
+ choice=int(input("enter choice 1 or 2:"))
+ if choice==1:
+ menu.phonebook()
+ elif choice==2:
+ break 
+ Menu 
+import db_connection
+def phonebook():
+ while True:
+ print("\t\t\t MINI PHONE BOOK\n")
+ print("------------------------------------------------")
+ print("1.Add a phone number:")
+ print("2.Display the phone book:")
+ print("3.Search a phone numer:")
+ print("4.Delete a phone contact:")
+ print("5.Update phone contact:")
+ print("6.exit")
+ print("------------------------------------------------")
+ choice=int(input("enter ur choice between 1 to 6 :"))
+ if choice == 1:
+ db_connection.insert_data()
+ elif choice == 2:
+ db_connection.display()
+ elif choice == 3:
+ db_connection.search_contact_list()
+ elif choice == 4:
+ db_connection.delete_contact()
+ elif choice == 5:
+ db_connection.update_contact()
+ elif choice == 6:
+ break
+ else:
+ print("opps!!,wrong choice")
+ x=input("enter any key to contact")
+ 
+ db_connection
+import mysql.connector as sqltor
+def display():
+cnx=sqltor.connect(host="localhost",user="root",passwd="root",database="t
+anu")
+ cursor=cnx.cursor()
+ query=("select * from phone2")
+ cursor.execute(query)
+ data = cursor.fetchall()
+ for row in data:
+ print(row)
+ for(Name,phone_contact,contact_id)in cursor:
+ print("\n")
+ print("Contact_Name:",Name)
+ print("Contact_Number of",phone_contact)
+ print("Id:",contact_id)
+ print("\n")
+ cursor.close()
+ cnx.close() 
+ print("u have done it ^w^ ")
+def insert_data():
+cnx=sqltor.connect(host="localhost",user="root",passwd="root",database="t
+anu")
+ cursor=cnx.cursor()
+ Name=input("enter Name with initial:")
+ phone_contact=int(input("enter contact number:"))
+ contact_id=int(input("enter the contact id:"))
+ qry=("insert into phone2 values(%s,%s,%s)")
+ data=(Name,phone_contact,contact_id,)
+ cursor.execute(qry,data)
+ cnx.commit()
+ cursor.close()
+ cnx.close()
+ print("record inserted ^w^")
+def delete_contact():
+cnx=sqltor.connect(host="localhost",user="root",passwd="root",database="t
+anu")
+ cursor=cnx.cursor()
+ contact_id=int(input("enter the contact id you want to delete:"))
+ qry=("delete from phone2 where contact_id=%s;")
+ del_rec=(contact_id,)
+ cursor.execute(qry,del_rec)
+ cnx.commit()
+ cursor.close()
+ cnx.close()
+ print("deleted succesfuly *-*")
+def search_contact_list():
+cnx=sqltor.connect(host="localhost",user="root",passwd="root",database="t
+anu")
+ cursor=cnx.cursor()
+ contact_id=int(input("enter the contact id you want to search:"))
+ qry=("select * from phone2 where contact_id=%s")
+ rec_srch=(contact_id,)
+ cursor.execute(qry,rec_srch)
+ data = cursor.fetchone()
+ count=cursor.rowcount
+ for(Name,phone_contact,contact_id)in cursor:
+ print("\n")
+ print("Contact_Name:",Name)
+ print("Contact_Number:",phone_contact)
+ print("contact_id:",contact_id)
+ print("\n")
+ print(data,"record found *-*")
+ cnx.commit()
+ cursor.close()
+ cnx.close()
+def update_contact():
+ cnx = 
+sqltor.connect(host="localhost",user="root",passwd="root",database="tanu
+")
+ cursor=cnx.cursor(buffered=True)
+ contact_id=int(input("enter the id where u want to edit the number:"))
+ query=("select * from phone2 where contact_id=%s")
+ rec_srch=(contact_id,) 
+ print("enter new contact details")
+ phone_contact=int(input("enter the contact_number:"))
+ qry=("update phone2 set phone_contact={} where 
+contact_id={}".format(phone_contact,contact_id))
+ cursor.execute(qry)
+ print("success")
+ cnx.commit()
+ cursor.close()
+ cnx.close()
